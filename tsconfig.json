@@ -1,6 +1,36 @@
 {
   "compilerOptions": {
-    "module": "commonjs"
+    "module": "commonjs",
+    "target": "es2015",
+    "lib": ["DOM", "ES2015"],
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "baseUrl": "./",
+    "outDir": "./cache",
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "pretty": true,
+    "noUnusedLocals": false,
+    "plugins": [
+      {
+        "transform": "typescript-transform-paths"
+      },
+      {
+        "transform": "typescript-transform-paths",
+        "afterDeclarations": true
+      }
+    ],
+    "paths": {
+      "@bootstrap/*": ["src/bootstrap/*"],
+      "@root/*": ["src/*"]
+    }
   },
+  "include": ["src/**/*.ts"],
   "exclude": ["node_modules"]
 }

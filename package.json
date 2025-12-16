@@ -3,8 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "dev": "nodemon -r tsconfig-paths/register src/app.ts",
     "prettier:check": "prettier --check src/**/*.{ts,json}",
-    "prettier:fix": "prettier --write src/**/*.{ts,json}"
+    "prettier:fix": "prettier --write src/**/*.{ts,json}",
+    "lint:check": "eslint . --ext .ts",
+    "lint:fix": "npx eslint --fix ."
   },
   "keywords": [],
   "author": "Teacher Miguel",

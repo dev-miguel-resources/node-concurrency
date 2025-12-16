@@ -1,3 +1,37 @@
 {
-  "root": true
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module"
+  },
+  "rules": {
+    "semi": [2, "always"],
+    "quotes": ["error", "single"],
+    "camelcase": 0,
+    "no-return-assign": 0,
+    "no-empty": "error",
+    "no-undef": "off",
+    "curly": "error",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/no-var-requires": "error",
+    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/no-namespace": "off",
+    "@typescript-eslint/no-empty-function": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "space-before-function-paren": [
+      0,
+      {
+        "anonymus": "always",
+        "named": "always"
+      }
+    ]
+  }
 }
