@@ -28,6 +28,7 @@
     ],
     "paths": {
       "@bootstrap/*": ["src/bootstrap/*"],
+      "@configs/*": ["src/configs/*"],
       "@root/*": ["src/*"]
     }
   },

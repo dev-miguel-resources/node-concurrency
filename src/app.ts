@@ -1,11 +1,21 @@
+import databaseConnection from '@bootstrap/setupDatabase.bootstrap';
+
+import { config } from '@configs/configEnvs';
+
 // Es la definición de lo que contiene y carga la app
 // Principio SOLID de Single Responsability
 class Application {
   public initialize(): void {
-    console.log('hello');
+    // 1. Carga y validación de config-envs
+    this.loadConfig();
+
+    // 2. Inicializo la conexión a la base de datos
+    databaseConnection();
   }
 
-  private loadConfig(): void {}
+  private loadConfig(): void {
+    config.validateConfig();
+  }
 }
 
 const application: Application = new Application();
