@@ -1,18 +1,23 @@
 {
-  "name": "back-red-social",
+  "name": "backend-red-social",
   "version": "1.0.0",
+  "description": "Red Social App with Node.js",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon -r tsconfig-paths/register src/app.ts | ./node_modules/.bin/bunyan",
+    "lint:check": "eslint . --ext .ts",
+    "lint:fix": "npx eslint --fix .",
     "prettier:check": "prettier --check src/**/*.{ts,json}",
     "prettier:fix": "prettier --write src/**/*.{ts,json}",
-    "lint:check": "eslint . --ext .ts",
-    "lint:fix": "npx eslint --fix ."
+    "test": "jest --coverage=true -w=1 --forceExit --detectOpenHandles --watchAll=false",
+    "build": "ttsc -p .",
+    "clean": "rimraf cache dist",
+    "build:pro": "yarn run clean && yarn run build && gulp minifyAndOfuscate",
+    "prod": "node dist/app.js"
   },
   "keywords": [],
-  "author": "Teacher Miguel",
+  "author": "Miguel Chamorro",
   "license": "ISC",
-  "description": "Project for course Node with Concurrency",
   "dependencies": {
     "@bull-board/express": "4.12.1",
     "@sendgrid/mail": "7.7.0",
@@ -75,5 +80,8 @@
     "ttypescript": "1.5.15",
     "typescript": "4.9.5",
     "typescript-transform-paths": "3.4.6"
+  },
+  "overrides": {
+    "express": "4.18.2"
   }
 }
