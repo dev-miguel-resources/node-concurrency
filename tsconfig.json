@@ -24,7 +24,9 @@
     "paths": {
       "@bootstrap/*": ["src/bootstrap/*"],
       "@configs/*": ["src/configs/*"],
-      "@root/*": ["src/*"]
+      "@root/*": ["src/*"],
+      "@interfaces/*": ["src/interfaces/*"],
+      "@helpers/*": ["src/shared/helpers/errors/*"]
     }
   },
   "include": ["src/**/*.ts", "test/**/*.ts"],
