@@ -24,9 +24,12 @@
     "paths": {
       "@bootstrap/*": ["src/bootstrap/*"],
       "@configs/*": ["src/configs/*"],
-      "@root/*": ["src/*"],
+      "@auth/*": ["src/features/auth/*"],
       "@interfaces/*": ["src/interfaces/*"],
-      "@helpers/*": ["src/shared/helpers/errors/*"]
+      "@helpers/*": ["src/shared/helpers/errors/*"],
+      "@decorators/*": ["src/shared/decorators/*"],
+      "@services/*": ["src/shared/services/*"],
+      "@root/*": ["src/*"]
     }
   },
   "include": ["src/**/*.ts", "test/**/*.ts"],
