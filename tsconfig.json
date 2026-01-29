@@ -25,8 +25,9 @@
       "@bootstrap/*": ["src/bootstrap/*"],
       "@configs/*": ["src/configs/*"],
       "@auth/*": ["src/features/auth/*"],
+      "@user/*": ["src/features/user/*"],
       "@interfaces/*": ["src/interfaces/*"],
-      "@helpers/*": ["src/shared/helpers/errors/*"],
+      "@helpers/*": ["src/shared/helpers/*"],
       "@decorators/*": ["src/shared/decorators/*"],
       "@services/*": ["src/shared/services/*"],
       "@root/*": ["src/*"]
