@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import { logger } from './configLogs';
 
 import Logger from 'bunyan';
+import cloudinary from 'cloudinary';
 
 dotenv.config({});
 
@@ -16,6 +17,9 @@ class ConfigEnvs {
   public NODE_ENV: string | undefined;
   public JWT_TOKEN: string | undefined;
   public SALT_ROUND: string | undefined;
+  public CLOUD_NAME: string | undefined;
+  public CLOUD_API_KEY: string | undefined;
+  public CLOUD_API_SECRET: string | undefined;
 
   constructor() {
     this.DATABASE_URL = process.env.DATABASE_URL;
@@ -26,6 +30,9 @@ class ConfigEnvs {
     this.NODE_ENV = process.env.NODE_ENV;
     this.JWT_TOKEN = process.env.JWT_TOKEN;
     this.SALT_ROUND = process.env.SALT_ROUND;
+    this.CLOUD_NAME = process.env.CLOUD_NAME;
+    this.CLOUD_API_KEY = process.env.CLOUD_API_KEY;
+    this.CLOUD_API_SECRET = process.env.CLOUD_API_SECRET;
   }
 
   // Método que valida que ninguna variable de entorno a utilizar sea undefined
@@ -41,7 +48,13 @@ class ConfigEnvs {
     }
   }
 
-  // más adelante agregaremos otro método de config para otras variables específicas
+  public cloudinaryConfig(): void {
+    cloudinary.v2.config({
+      cloud_name: this.CLOUD_NAME,
+      api_key: this.CLOUD_API_KEY,
+      api_secret: this.CLOUD_API_SECRET
+    });
+  }
 }
 
 export const config: ConfigEnvs = new ConfigEnvs();
