@@ -20,6 +20,8 @@ class ConfigEnvs {
   public CLOUD_NAME: string | undefined;
   public CLOUD_API_KEY: string | undefined;
   public CLOUD_API_SECRET: string | undefined;
+  public CLOUD_DOMAIN: string | undefined;
+  public REDIS_HOST: string | undefined;
 
   constructor() {
     this.DATABASE_URL = process.env.DATABASE_URL;
@@ -33,6 +35,8 @@ class ConfigEnvs {
     this.CLOUD_NAME = process.env.CLOUD_NAME;
     this.CLOUD_API_KEY = process.env.CLOUD_API_KEY;
     this.CLOUD_API_SECRET = process.env.CLOUD_API_SECRET;
+    this.CLOUD_DOMAIN = process.env.CLOUD_DOMAIN;
+    this.REDIS_HOST = process.env.REDIS_HOST;
   }
 
   // Método que valida que ninguna variable de entorno a utilizar sea undefined

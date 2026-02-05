@@ -1,5 +1,5 @@
 import { Document } from 'mongoose';
-import { ObjectId } from 'mongoose';
+import { ObjectId } from 'mongodb';
 
 // Design Pattern of OWASP: Security for Design
 export interface IAuthDocument extends Document {

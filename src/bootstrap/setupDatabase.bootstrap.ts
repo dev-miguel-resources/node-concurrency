@@ -6,7 +6,7 @@ import { config } from '@configs/configEnvs';
 
 import { logger } from '@configs/configLogs';
 
-// redis pendiente de definir
+import { redisConnection } from '@services/redis/redis.connection';
 
 // definición del log para este archivo
 const log: Logger = logger.createLogger('setupDatabase');
@@ -20,6 +20,9 @@ export default () => {
       .then(() => {
         // Emitir un log informativo indicando que la conexión fue exitosa
         log.info('Succesfully connected to database');
+
+        // Iniciar la conexión con redis una vez la base de datos secundaria esté activa
+        redisConnection.connect();
       })
       .catch(error => {
         log.error('Error connecting to database', error);

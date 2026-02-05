@@ -10,8 +10,8 @@ import { config } from '@configs/configEnvs';
 import { logger } from '@configs/configLogs';
 import applicationRoutes from '@interfaces/http/routes';
 import HTTP_STATUS from 'http-status-codes';
-import { IErrorResponse } from '@helpers/errorResponse.interface';
-import { CustomError } from '@helpers/customError';
+import { IErrorResponse } from '@helpers/errors/errorResponse.interface';
+import { CustomError } from '@helpers/errors/customError';
 
 const log: Logger = logger.createLogger('server');
 

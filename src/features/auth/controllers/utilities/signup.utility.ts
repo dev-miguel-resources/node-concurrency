@@ -2,7 +2,7 @@ import { IAuthDocument } from '@auth/interfaces/authDocument.interface';
 import { ISignUpData } from '@auth/interfaces/signUpData.interface';
 import { Generators } from '@helpers/generators/generators';
 import { IUserDocument } from '@user/interfaces/userDocument.interface';
-import { ObjectId } from 'mongoose';
+import { ObjectId } from 'mongodb';
 import JWT from 'jsonwebtoken';
 import { config } from '@configs/configEnvs';
 

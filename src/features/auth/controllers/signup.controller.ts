@@ -9,6 +9,8 @@ import { Generators } from '@helpers/generators/generators';
 import { IAuthDocument } from '@auth/interfaces/authDocument.interface';
 import { UploadApiResponse } from 'cloudinary';
 import { uploads } from '@helpers/cloudinary/cloudinaryUploads';
+import { IUserDocument } from '@user/interfaces/userDocument.interface';
+import { config } from '@configs/configEnvs';
 
 export class SignUpController extends SignUpUtility {
   @joiValidation(signupSchema)
@@ -38,6 +40,10 @@ export class SignUpController extends SignUpUtility {
     if (!result.public_id) {
       throw new BadRequestError('File upload: Error ocurred. Try again.');
     }
+
+    const userDataForCache: IUserDocument = SignUpController.prototype.userData(authData, userObjectId);
+    userDataForCache.profilePicture = `${config.CLOUD_DOMAIN}/${config.CLOUD_NAME}/image/upload/v${result.version}/${userObjectId}`;
+    // gestión de la data hacia la caché
 
     // Optimizar el procesamiento de recursos mediante concurrencia
     // cache
