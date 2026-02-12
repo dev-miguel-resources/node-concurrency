@@ -3,6 +3,8 @@ import Logger from 'bunyan';
 import { config } from '@configs/configEnvs';
 import { BullAdapter, ExpressAdapter, createBullBoard } from '@bull-board/express';
 import { logger } from '@configs/configLogs';
+import { IAuthJob } from '@auth/interfaces/authJob.interface';
+import { IUserJob } from '@user/interfaces/userJob.interface';
 
 // Arreglo global que almacenará los adaptadores para todas las colas.
 // Esto es para mostrar los eventos de las colas en el dashboard.
@@ -12,7 +14,8 @@ let bullAdapters: BullAdapter[] = [];
 export let serverAdapter: ExpressAdapter;
 
 // Definir un tipo base que pueda ser cualquiera de estos tipos de job.
-// Esto que permite que la cola acepte múltiples tipos de trabajos. (pendiente)
+// tipos necesarios inicialmente
+type IBaseJobData = IUserJob | IAuthJob;
 
 // Clases de colas la extenderán para crear colas específicas
 export abstract class BaseQueue {
@@ -68,7 +71,7 @@ export abstract class BaseQueue {
   // Método protegido que permite agregar un nuevo job a la cola.
   // name = nombre de la tarea (job)
   // data = datos a manejar en el job
-  protected addJob(name: string, data: any): void {
+  protected addJob(name: string, data: IBaseJobData): void {
     // configuras el comportamiento de los jobs en las colas
     this.queue.add(name, data, {
       // Número de intentos si el job falla.
@@ -82,7 +85,7 @@ export abstract class BaseQueue {
     });
   }
 
-  // Método para que las colas puedan parametrizar como manejar la concurrencia y otros procesos.
+  // Método para que las colas puedan parametrizar como manejar la concurrencia y sus procesos.
   protected processJob(
     name: string, // nombre de la tarea a procesar
     concurrency: number, // número de jobs que pueden ejecutarse en paralelo

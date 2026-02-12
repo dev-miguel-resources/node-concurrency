@@ -43,7 +43,10 @@ export class SignUpController extends SignUpUtility {
 
     const userDataForCache: IUserDocument = SignUpController.prototype.userData(authData, userObjectId);
     userDataForCache.profilePicture = `${config.CLOUD_DOMAIN}/${config.CLOUD_NAME}/image/upload/v${result.version}/${userObjectId}`;
-    // gestión de la data hacia la caché
+    // gestión de la data hacia la caché de usuario
+    // agregacion a redis para cachear sus datos de usuario
+    // mandar a llamar la cola de authentication para en base a lo que está en redis
+    // recuperar la data de auth y mandarla a mongo
 
     // Optimizar el procesamiento de recursos mediante concurrencia
     // cache
