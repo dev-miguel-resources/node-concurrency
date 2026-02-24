@@ -3,7 +3,7 @@ import Logger from 'bunyan';
 import bcrypt from 'bcryptjs';
 import { config } from '@configs/configEnvs';
 
-// const log: Logger = logger.createLogger('generators');
+const log: Logger = logger.createLogger('generators');
 export class Generators {
   // Primer character en Uppercase el resto en lowercase
   static firstLetterUppercase(str: string) {
@@ -34,5 +34,16 @@ export class Generators {
   // encriptar contraseñas
   static hash(password: string): Promise<string> {
     return bcrypt.hash(password, Number(config.SALT_ROUND));
+  }
+
+  // convertir de json stringify a valor natural
+  static parseJson(property: string) {
+    try {
+      JSON.parse(property);
+    } catch (error) {
+      log.error(error);
+    }
+
+    return JSON.parse(property);
   }
 }
