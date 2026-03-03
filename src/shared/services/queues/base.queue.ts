@@ -36,6 +36,9 @@ export abstract class BaseQueue {
     // Puedes agregar eliminar duplicado mediante la instancia Set.
     bullAdapters = [...new Set(bullAdapters)];
 
+    // Registrar el adaptador como adaptador de Express
+    serverAdapter = new ExpressAdapter();
+
     // Definir una ruta base en la cual se desplegará el dashboard.
     // Por ej: http://localhost:3000/queues
     serverAdapter.setBasePath('/queues');

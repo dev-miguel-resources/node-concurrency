@@ -1,3 +1,4 @@
+import HTTP_STATUS from 'http-status-codes';
 import { Request, Response } from 'express';
 import { signupSchema } from '../schemes/signup';
 import { joiValidation } from '@decorators/joi-validation.decorator';
@@ -11,6 +12,12 @@ import { UploadApiResponse } from 'cloudinary';
 import { uploads } from '@helpers/cloudinary/cloudinaryUploads';
 import { IUserDocument } from '@user/interfaces/userDocument.interface';
 import { config } from '@configs/configEnvs';
+import { UserCache } from '@services/redis/user/user.cache';
+import { authQueue } from '@services/queues/auth.queue';
+import { omit } from 'lodash';
+import { userQueue } from '@services/queues/user.queue';
+
+const userCache: UserCache = new UserCache();
 
 export class SignUpController extends SignUpUtility {
   @joiValidation(signupSchema)
@@ -43,19 +50,18 @@ export class SignUpController extends SignUpUtility {
 
     const userDataForCache: IUserDocument = SignUpController.prototype.userData(authData, userObjectId);
     userDataForCache.profilePicture = `${config.CLOUD_DOMAIN}/${config.CLOUD_NAME}/image/upload/v${result.version}/${userObjectId}`;
-    // gestión de la data hacia la caché de usuario
-    // agregacion a redis para cachear sus datos de usuario
-    // mandar a llamar la cola de authentication para en base a lo que está en redis
-    // recuperar la data de auth y mandarla a mongo
+    // formato de guardado del usuario en redis
+    await userCache.saveToUserCache(`${userObjectId}`, uId, userDataForCache);
 
-    // Optimizar el procesamiento de recursos mediante concurrencia
-    // cache
-    // colas
-    // hilos/workers
-    // redis
-    // tokens
-    // procesos distribuidos
-    // prototipados
-    // etc....
+    authQueue.addAuthUserJob('addAuthUserToDB', { value: userDataForCache });
+    omit(userDataForCache, ['uId', 'username', 'email', 'avatarColor', 'password']);
+    userQueue.addUserJob('addUserToDB', { value: userDataForCache });
+
+    const userJwt: string = SignUpController.prototype.signToken(authData, userObjectId);
+    req.session = { jwt: userJwt };
+
+    res
+      .status(HTTP_STATUS.CREATED)
+      .json({ message: 'User created succesfully', user: userDataForCache, token: userJwt });
   }
 }

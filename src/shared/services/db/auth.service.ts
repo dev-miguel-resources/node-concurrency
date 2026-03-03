@@ -1,5 +1,6 @@
 import { IAuthDocument } from '@auth/interfaces/authDocument.interface';
 import { AuthModel } from '@auth/models/auth.schema';
+import { Generators } from '@helpers/generators/generators';
 
 class AuthService {
   public async createAuthUser(data: IAuthDocument): Promise<void> {
@@ -8,8 +9,7 @@ class AuthService {
 
   public async getUserByUsernameOrEmail(username: string, email: string): Promise<IAuthDocument> {
     const query = {
-      // Falta entandarizar el formato con la bdd
-      $or: [{ username: username }, { email: email }]
+      $or: [{ username: Generators.firstLetterUppercase(username) }, { email: Generators.lowerCase(email) }]
     };
     const user: IAuthDocument = (await AuthModel.findOne(query).exec()) as IAuthDocument;
     return user;
