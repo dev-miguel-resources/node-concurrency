@@ -10,7 +10,7 @@ export default (app: Application) => {
     app.use('/healthcheck', (req: Request, res: Response) => res.send('Server is OK!'));
     app.use('/queues', serverAdapter.getRouter());
 
-    app.use(config.BASE_PATH!, authRoutes.routes);
+    app.use(config.BASE_PATH!, authRoutes.routes());
   };
 
   routes();
