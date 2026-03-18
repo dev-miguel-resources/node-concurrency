@@ -1,5 +1,5 @@
 import mongoose, { Document } from 'mongoose';
-import { ObjectId } from 'mongoose';
+import { ObjectId } from 'mongodb';
 import { INotificationSettings } from './notificationSettings.interface';
 import { ISocialLinks } from './socialLinks.interface';
 
@@ -8,6 +8,7 @@ export interface IUserDocument extends Document {
   authId: string | ObjectId;
   username?: string;
   email?: string;
+  password?: string;
   avatarColor?: string;
   uId?: string;
   postsCount: number;

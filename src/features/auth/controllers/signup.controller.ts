@@ -19,49 +19,47 @@ import { userQueue } from '@services/queues/user.queue';
 
 const userCache: UserCache = new UserCache();
 
-export class SignUpController extends SignUpUtility {
+export class SignUp extends SignUpUtility {
   @joiValidation(signupSchema)
-  public async register(req: Request, res: Response): Promise<void> {
+  public async create(req: Request, res: Response): Promise<void> {
     const { username, email, password, avatarColor, avatarImage } = req.body;
     const checkIfUserExist = await authService.getUserByUsernameOrEmail(username, email);
     if (checkIfUserExist) {
-      throw new BadRequestError('Invalid credentials for this user. User exists');
+      throw new BadRequestError('Invalid credentials for this user');
     }
 
-    // Preparar los valores
     const authObjectId: ObjectId = new ObjectId();
     const userObjectId: ObjectId = new ObjectId();
     const uId = `${Generators.generateRandomIntegers(12)}`;
     const passwordHash = await Generators.hash(password);
-    const authData: IAuthDocument = SignUpController.prototype.signUpdata({
+    const authData: IAuthDocument = SignUp.prototype.signUpData({
       _id: authObjectId,
-      uId: uId,
+      uId,
       username,
       email,
       password: passwordHash,
       avatarColor
     });
 
-    // faltan las definiciones del avatar Image
     const result: UploadApiResponse = (await uploads(avatarImage, `${userObjectId}`)) as UploadApiResponse;
-    if (!result.public_id) {
+    if (!result?.public_id) {
       throw new BadRequestError('File upload: Error ocurred. Try again.');
     }
 
-    const userDataForCache: IUserDocument = SignUpController.prototype.userData(authData, userObjectId);
+    const userDataForCache: IUserDocument = SignUp.prototype.userData(authData, userObjectId);
     userDataForCache.profilePicture = `${config.CLOUD_DOMAIN}/${config.CLOUD_NAME}/image/upload/v${result.version}/${userObjectId}`;
-    // formato de guardado del usuario en redis
+
     await userCache.saveToUserCache(`${userObjectId}`, uId, userDataForCache);
 
-    authQueue.addAuthUserJob('addAuthUserToDB', { value: userDataForCache });
     omit(userDataForCache, ['uId', 'username', 'email', 'avatarColor', 'password']);
+    authQueue.addAuthUserJob('addAuthUserToDB', { value: userDataForCache });
     userQueue.addUserJob('addUserToDB', { value: userDataForCache });
 
-    const userJwt: string = SignUpController.prototype.signToken(authData, userObjectId);
+    const userJwt: string = SignUp.prototype.signToken(authData, userObjectId);
     req.session = { jwt: userJwt };
 
     res
       .status(HTTP_STATUS.CREATED)
-      .json({ message: 'User created succesfully', user: userDataForCache, token: userJwt });
+      .json({ message: 'User created successfully', user: userDataForCache, token: userJwt });
   }
 }

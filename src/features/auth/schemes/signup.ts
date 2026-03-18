@@ -14,8 +14,8 @@ const signupSchema: ObjectSchema = Joi.object().keys({
     'string.max': 'Password must be at most eight characters'
   }),
   email: Joi.string().required().email().messages({
-    'string.base': 'Password must be of type string',
-    'string.empty': 'Password is a required field',
+    'string.base': 'Email must be of type string',
+    'string.empty': 'Email is a required field',
     'string.email': 'Email must be valid'
   }),
   avatarColor: Joi.string().required().messages({

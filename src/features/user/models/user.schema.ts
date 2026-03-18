@@ -1,5 +1,5 @@
-import mongoose, { model, Model, Schema } from 'mongoose';
 import { IUserDocument } from '../interfaces/userDocument.interface';
+import mongoose, { model, Model, Schema } from 'mongoose';
 
 const userSchema: Schema = new Schema({
   authId: { type: mongoose.Schema.Types.ObjectId, ref: 'Auth' },

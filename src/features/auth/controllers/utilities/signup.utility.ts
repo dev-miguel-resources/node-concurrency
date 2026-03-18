@@ -7,12 +7,7 @@ import JWT from 'jsonwebtoken';
 import { config } from '@configs/configEnvs';
 
 export abstract class SignUpUtility {
-  // public: lo puede utilizar cualquiera fuera de esta clase
-  // private: solo en el contexto de la misma clase
-  // protected: solo para los que la hereden
-
-  // La data a ocupar para generar el documento de Auth
-  protected signUpdata(data: ISignUpData): IAuthDocument {
+  protected signUpData(data: ISignUpData): IAuthDocument {
     const { _id, username, email, uId, password, avatarColor } = data;
     return {
       _id,
@@ -25,7 +20,6 @@ export abstract class SignUpUtility {
     } as IAuthDocument;
   }
 
-  // Generar la data de user a ocupar como documento
   protected userData(data: IAuthDocument, userObjectId: ObjectId): IUserDocument {
     const { _id, username, email, uId, password, avatarColor } = data;
     return {
@@ -62,7 +56,6 @@ export abstract class SignUpUtility {
     } as unknown as IUserDocument;
   }
 
-  // Firma de datos mediante token
   protected signToken(data: IAuthDocument, userObjectId: ObjectId): string {
     return JWT.sign(
       {

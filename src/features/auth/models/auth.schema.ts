@@ -15,15 +15,15 @@ const authSchema: Schema = new Schema(
   },
   {
     toJSON: {
-      transform(doc, ret) {
-        delete ret.password; // no exponer el pass
+      transform(_doc, ret) {
+        delete ret.password;
         return ret;
       }
     }
   }
 );
 
-// Virtual Methods or Space Methods -> Comportamientos del schema inherentes a él
+// Virtual Methods or Space Methods -> comportamientos de schemas inherentes a él
 authSchema.methods.comparePassword = async function (password: string): Promise<boolean> {
   const hashedPassword: string = (this as IAuthDocument).password!;
   return compare(password, hashedPassword);

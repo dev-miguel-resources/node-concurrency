@@ -1,20 +1,26 @@
+import { DoneCallback, Job } from 'bull';
+import Logger from 'bunyan';
 import { logger } from '@configs/configLogs';
 import { userService } from '@services/db/user.service';
-import { Job, DoneCallback } from 'bull';
-import Logger from 'bunyan';
 
 const log: Logger = logger.createLogger('userWorker');
 
 class UserWorker {
-  public async addUserToDB(job: Job, done: DoneCallback): Promise<void> {
+  public async addUserToDB(job: Job): Promise<void> {
     try {
       const { value } = job.data;
+
+      console.log('JOB DATA:', value);
+
       await userService.addUserData(value);
-      job.progress(100);
-      done(null, job.data);
+
+      console.log('USER SAVED');
+
+      await job.progress(100);
     } catch (error) {
+      console.error('ERROR MONGO:', error);
       log.error(error);
-      done(error as Error);
+      throw error; // Bull marcará el job como failed
     }
   }
 }

@@ -12,10 +12,6 @@ export class UserCache extends BaseCache {
     super('userCache');
   }
 
-  // 1. Método para guardar la data de usuario con el formato solicitado por redis.
-  // key: es una llave que representa los datos en la cache: 'user'.
-  // userUid: identificador de cada elemento en redis.
-  // tercer parámetro: es la data de cada user key
   public async saveToUserCache(key: string, userUid: string, createdUser: IUserDocument): Promise<void> {
     const createdAt = new Date();
     const {
@@ -40,7 +36,6 @@ export class UserCache extends BaseCache {
       bgImageId
     } = createdUser;
 
-    // convención: cada atributo a redis debe venir como una cadena
     const dataToSave = {
       _id: `${_id}`,
       uId: `${uId}`,
@@ -64,17 +59,12 @@ export class UserCache extends BaseCache {
       bgImageId: `${bgImageId}`
     };
 
-    // Observable que se encarga de verificar el cliente de redis previo a procesar
     try {
+      // observable que se encargue de verificar el cliente de redis
       if (!this.client.isOpen) {
         await this.client.connect();
       }
 
-      // Proceso de inserción
-      // score: puntaje de calibración: radix: 2-36 (devuelve un valor hex de base x)
-      // si tu server es básico en la nube: 5-6
-      // tu server tiene manejo de eventos: SÍ. 8-10
-      // Si tu server tiene alta capacidad de la nube: 10
       await this.client.ZADD('user', { score: parseInt(userUid, 10), value: `${key}` });
       for (const [itemKey, itemValue] of Object.entries(dataToSave)) {
         await this.client.HSET(`users:${key}`, `${itemKey}`, `${itemValue}`);
@@ -85,7 +75,6 @@ export class UserCache extends BaseCache {
     }
   }
 
-  // 2. Método para leer la data de usuario de la cache.
   public async getUserFromCache(userId: string): Promise<IUserDocument | null> {
     try {
       if (!this.client.isOpen) {
@@ -93,7 +82,6 @@ export class UserCache extends BaseCache {
       }
 
       const response: IUserDocument = (await this.client.HGETALL(`users:${userId}`)) as unknown as IUserDocument;
-      // recuperar los valores de json stringify a valor natural con parseJSON
       response.createdAt = new Date(Generators.parseJson(`${response.createdAt}`));
       response.postsCount = Generators.parseJson(`${response.postsCount}`);
       response.blocked = Generators.parseJson(`${response.blocked}`);
